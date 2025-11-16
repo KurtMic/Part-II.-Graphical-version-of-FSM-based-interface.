@@ -148,6 +148,7 @@ public class ProductCatalog {
             System.out.println("Product not found.");
         }
     }
+    
 
     private void fulfillWaitlist(String sku) {
         Product product = getProductBySku(sku);
