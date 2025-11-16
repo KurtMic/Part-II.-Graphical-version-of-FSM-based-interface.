@@ -5,25 +5,40 @@ public class ManagerMenuGUIState implements State {
 
     @Override
     public JPanel getPanel(GUIContext context) {
-        JPanel panel = new JPanel(new GridLayout(5, 1, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
 
         JLabel title = new JLabel("Manager Menu", JLabel.CENTER);
         panel.add(title);
 
+        //Add Product
         JButton addProductBtn = new JButton("Add Product");
         addProductBtn.addActionListener(e -> addProduct(context));
         panel.add(addProductBtn);
 
+        //Display Waitlist
         JButton displayWaitlistBtn = new JButton("Display Waitlist");
         displayWaitlistBtn.addActionListener(e -> displayWaitlist(context));
         panel.add(displayWaitlistBtn);
 
+        //Receive Shipment
         JButton receiveShipmentBtn = new JButton("Receive Shipment");
         receiveShipmentBtn.addActionListener(e -> receiveShipment(context));
         panel.add(receiveShipmentBtn);
 
+        //Become Clerk
+        JButton becomeClerkBtn = new JButton("Become Clerk");
+        becomeClerkBtn.addActionListener(e -> {
+            context.setClerkOrigin("Manager");  // track origin
+            context.setState(new ClerkMenuGUIState());
+        });
+        panel.add(becomeClerkBtn);
+
+        //Logout
         JButton logoutBtn = new JButton("Logout");
-        logoutBtn.addActionListener(e -> context.setState(new OpeningGUIState()));
+        logoutBtn.addActionListener(e -> {
+            context.resetClerkFlags();
+            context.setState(new OpeningGUIState());
+        });
         panel.add(logoutBtn);
 
         return panel;
@@ -65,7 +80,7 @@ public class ManagerMenuGUIState implements State {
     private void displayWaitlist(GUIContext context) {
         String sku = JOptionPane.showInputDialog("Enter SKU to display waitlist:");
         if (sku != null) {
-            context.getProductCatalog().displayWaitlist(sku); 
+            context.getProductCatalog().displayWaitlist(sku);
         }
     }
 
@@ -87,3 +102,4 @@ public class ManagerMenuGUIState implements State {
         }
     }
 }
+
